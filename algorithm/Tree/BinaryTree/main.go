@@ -8,6 +8,7 @@ type TreeNode struct {
 	Right *TreeNode
 }
 
+//前序遍历 根-左-右
 func PrevTreeNode(tree *TreeNode) {
 	if tree != nil {
 		fmt.Println(tree.Val)
@@ -17,6 +18,7 @@ func PrevTreeNode(tree *TreeNode) {
 
 }
 
+//中序遍历 左-根-右
 func MiddleTreeNode(tree *TreeNode) {
 	if tree != nil {
 		MiddleTreeNode(tree.Left)
@@ -26,12 +28,48 @@ func MiddleTreeNode(tree *TreeNode) {
 
 }
 
+//后序遍历 左-右-根
 func AfterTreeNode(tree *TreeNode) {
 	if tree != nil {
 		AfterTreeNode(tree.Left)
 		AfterTreeNode(tree.Right)
 		fmt.Println(tree.Val)
 	}
+}
+
+type Node struct {
+	Val      int
+	Children []*Node
+}
+
+//N叉树后序遍历
+func postorder(root *Node) (result []int) {
+	var nodeHandle func(root *Node)
+	nodeHandle = func(root *Node) {
+		if root != nil {
+			for _, value := range root.Children {
+				nodeHandle(value)
+			}
+			result = append(result, root.Val)
+		}
+	}
+	nodeHandle(root)
+	return
+}
+
+//N叉树前序遍历
+func preorder(root *Node) (result []int) {
+	var nodeHandle func(root *Node)
+	nodeHandle = func(root *Node) {
+		if root != nil {
+			result = append(result, root.Val)
+			for _, value := range root.Children {
+				nodeHandle(value)
+			}
+		}
+	}
+	nodeHandle(root)
+	return
 }
 
 func main() {
