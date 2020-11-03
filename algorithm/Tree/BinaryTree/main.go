@@ -18,12 +18,45 @@ func PrevTreeNode(tree *TreeNode) {
 
 }
 
+//迭代实现前序遍历
+//如何思考用递归解决问题
+
+func RecurtionPrevTreeNode(root *TreeNode) {
+	stack := []*TreeNode{}
+	for root != nil || len(stack) > 0 {
+		if root != nil {
+			fmt.Println(root.Val)
+			stack = append(stack, root)
+			root = root.Left
+		} else {
+			root = stack[len(stack)-1].Right
+			stack = stack[:len(stack)-1]
+		}
+	}
+}
+
 //中序遍历 左-根-右
 func MiddleTreeNode(tree *TreeNode) {
 	if tree != nil {
 		MiddleTreeNode(tree.Left)
 		fmt.Println(tree.Val)
 		MiddleTreeNode(tree.Right)
+	}
+
+}
+func RecurtionMiddleTreeNode(root *TreeNode) {
+	stack := []*TreeNode{}
+	for root != nil || len(stack) > 0 {
+		if root != nil {
+			stack = append(stack, root)
+			root = root.Left
+		} else {
+			node := stack[len(stack)-1]
+			fmt.Println(node.Val)
+			root = node.Right
+			stack = stack[:len(stack)-1]
+		}
+
 	}
 
 }
@@ -35,6 +68,26 @@ func AfterTreeNode(tree *TreeNode) {
 		AfterTreeNode(tree.Right)
 		fmt.Println(tree.Val)
 	}
+}
+
+//后序遍历 左-右-根
+//利用前序遍历  root-right-left 然后反转 好牛逼的想法
+func RecurtionAfterTreeNode(root *TreeNode) {
+	stack := []*TreeNode{}
+	var result []int
+
+	for root != nil || len(stack) > 0 {
+		if root != nil {
+			result = append(result, root.Val)
+			stack = append(stack, root)
+			root = root.Right
+		} else {
+			node := stack[len(stack)-1]
+			root = node.Left
+			stack = stack[:len(stack)-1]
+		}
+	}
+	fmt.Print(result)
 }
 
 type Node struct {
@@ -90,5 +143,5 @@ func main() {
 
 	root3.Left = root6
 	root3.Right = root7
-	MiddleTreeNode(root1)
+	RecurtionAfterTreeNode(root1)
 }
