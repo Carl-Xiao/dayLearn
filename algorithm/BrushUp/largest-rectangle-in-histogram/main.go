@@ -10,6 +10,7 @@ func max(x, y int) int {
 
 }
 
+//第5遍了还是需要画图才能懂
 func largestRectangleArea(heights []int) int {
 	var width, height int
 	var result int
