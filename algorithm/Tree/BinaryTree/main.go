@@ -125,6 +125,22 @@ func preorder(root *Node) (result []int) {
 	return
 }
 
+//递归前序遍历left-root-right
+func RecurtionMiddleTreeNode2(root *TreeNode) {
+	var stack []*TreeNode
+	for root != nil || len(stack) > 0 {
+		if root != nil {
+			stack = append(stack, root)
+			root = root.Left
+		} else {
+			node := stack[len(stack)-1]
+			fmt.Println(node.Val)
+			root = node.Right
+			stack = stack[:len(stack)-1]
+		}
+	}
+}
+
 func main() {
 
 	root1 := &TreeNode{Val: 1}
@@ -143,5 +159,5 @@ func main() {
 
 	root3.Left = root6
 	root3.Right = root7
-	RecurtionAfterTreeNode(root1)
+	RecurtionMiddleTreeNode2(root1)
 }
