@@ -6,7 +6,7 @@
             "type": "go",
             "request": "launch",
             "mode": "auto",
-            "program": "G:\\xiao\\dayLearn\\algorithm\\Tree\\BinaryTree\\main.go",
+            "program": "G:\\xiao\\dayLearn\\algorithm\\BrushUp\\permutations\\main.go",
             "env": {},
             "args": []
         }
