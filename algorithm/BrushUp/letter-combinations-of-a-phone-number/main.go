@@ -7,7 +7,7 @@ package main
 
 //1 第一步将各个数字对应的字母缓存
 
-//2 用递归 别去人脑递归,会把自己困在旋涡中
+//2 用递归 别用人脑递归,会把自己困在旋涡中
 var combinations []string
 
 func letterCombinations(digits string) []string {

@@ -22,18 +22,20 @@ func permute(nums []int) [][]int {
 	_permute(0, nums, result)
 	return *result
 }
-
-func _permute(start int, nums []int, results *[][]int) {
-	if start == len(nums) {
-		tmp := make([]int, len(nums))
-		copy(tmp, nums)
-		*results = append(*results, tmp)
+func _permute(k int, nums []int, result *[][]int) {
+	if len(nums) == k {
+		temp := make([]int, k)
+		copy(temp, nums)
+		*result = append(*result, temp)
 		return
 	}
-	for i := start; i < len(nums); i++ {
-		nums[i], nums[start] = nums[start], nums[i]
-		_permute(start+1, nums, results)
-		nums[i], nums[start] = nums[start], nums[i]
+	fmt.Println(nums)
+	for i := k; i < len(nums); i++ {
+		//先改
+		nums[i], nums[k] = nums[k], nums[i]
+		_permute(k+1, nums, result)
+		//还原
+		nums[i], nums[k] = nums[k], nums[i]
 	}
 }
 
