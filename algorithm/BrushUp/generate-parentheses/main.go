@@ -14,6 +14,7 @@ import "fmt"
 //        "()()()"
 //      ]
 //难点 这玩意要验证括号成对的正确性
+
 //1 找重复性代码
 //2 验证代码的合理性
 
@@ -22,22 +23,25 @@ import "fmt"
 
 func generateParenthesis(n int) []string {
 	result := new([]string)
-	_generateParenthesis("", n, 0, 0, result)
+	dfs("", n, n, result)
 	return *result
 }
 
-func _generateParenthesis(buf string, n, left, right int, result *[]string) {
-	if left == n && right == n {
+func dfs(buf string, left, right int, result *[]string) {
+	if left == 0 && right == 0 {
 		*result = append(*result, buf)
 		return
 	}
-	//处理逻辑
-	if left < n {
-		_generateParenthesis(buf+"(", n, left+1, right, result)
+	if left > 0 {
+		dfs(buf+"(", left-1, right, result)
 	}
-	if left > right {
-		_generateParenthesis(buf+")", n, left, right+1, result)
+	if right > left {
+		dfs(buf+")", left, right-1, result)
 	}
+}
+
+func bfs(left, right int) {
+
 }
 
 func main() {

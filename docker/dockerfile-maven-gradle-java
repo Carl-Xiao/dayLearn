@@ -1,0 +1,51 @@
+
+FROM buildpack-deps:buster
+
+ENV JAVA_HOME=/opt/jdk1.8.0_191
+ENV MAVEN_HOME=/opt/maven
+ENV GRADLE_HOME=/opt/gradle
+ENV GRADLE_USER_HOME=/opt/cache
+
+ENV CLASSPATH=.:$JAVA_HOME/jre/lib/security/local_policy.jar:$JAVA_HOME/jre/lib/security/US_export_policy.jar
+ENV PATH /usr/local/bin/:$JAVA_HOME/bin:$MAVEN_HOME/bin:$GRADLE_HOME/bin:$PATH
+
+ENV LANG C.UTF-8
+
+COPY sources.list /etc/apt/sources.list
+
+RUN apt-get update && apt-get install -y python-xlib && apt-get install -y vim && apt-get install -y --no-install-recommends \
+        tk-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY server-jre-8u191-linux-x64.tar.gz /opt/server-jre-8u191-linux-x64.tar.gz
+
+COPY gradle.zip /opt/gradle.zip
+COPY maven.zip /opt/maven.zip
+
+RUN  unzip /opt/gradle.zip -d /opt/ && unzip /opt/maven.zip -d /opt/
+
+RUN set -ex \
+    && tar -xzf /opt/server-jre-8u191-linux-x64.tar.gz -C /opt/ \
+#    && ln -s /opt/server-jre-8u191-linux-x64/bin/java /usr/local/bin/java \
+    && rm -rf /opt/server-jre-8u191-linux-x64.tar.gz \
+    \
+    && java -version
+
+COPY Source_Han_Sans_CN_Normal.ttf  /opt
+COPY simsun.ttf  /opt
+
+RUN  mv /opt/simsun.ttf /opt/jdk1.8.0_191/jre/lib/fonts
+
+RUN  mv /opt/Source_Han_Sans_CN_Normal.ttf /opt/jdk1.8.0_191/jre/lib/fonts
+
+RUN  mkdir -p /home/newrank/
+
+COPY agent.tar.gz /home/newrank/agent.tar.gz
+
+RUN  tar -xzf /home/newrank/agent.tar.gz -C /home/newrank
+
+RUN /bin/cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
+    && echo 'Asia/Shanghai' >/etc/timezone
+
+
+# docker run -v $PWD:/root -v /home/cache:/opt/cache  -v /home/repository:/opt/repository  -w /root registry.cn-hangzhou.aliyuncs.com/kanbang/maven-gradle:v1 sh -c 'gradle clean && gradle build -x test'
