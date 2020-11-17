@@ -12,6 +12,10 @@ func threeSum(nums []int) [][]int {
 	var res [][]int
 	m := make(map[int]int)
 	m2 := make(map[string]bool)
+	m3 := make(map[int]bool)
+	for _, value := range nums {
+		m3[value] = true
+	}
 
 	sort.Ints(nums)
 	for i := 0; i < len(nums); i++ {
@@ -23,6 +27,9 @@ func threeSum(nums []int) [][]int {
 				continue
 			}
 			temp := 0 - (nums[i] + nums[j])
+			if _, ok := m3[temp]; !ok {
+				continue
+			}
 			_, ok := m[temp]
 			if ok {
 				result := []int{nums[i], nums[j], temp}

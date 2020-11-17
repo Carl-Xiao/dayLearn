@@ -18,6 +18,3 @@ func climbStairs(n int) int {
 	fmt.Println(dp)
 	return dp[n-1]
 }
-func main() {
-	fmt.Println(climbStairs(3))
-}
