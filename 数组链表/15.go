@@ -1,9 +1,5 @@
 package main
 
-import (
-	"fmt"
-)
-
 //枚举完所有的例子 感觉不太好
 // 给你一个包含 n 个整数的数组 nums，判断 nums 中是否存在三个元素 a，b，c ，使得 a + b + c = 0 ？请你找出所有满足条件且不重复的三元组。
 // func threeSum(nums []int) [][]int {
@@ -47,7 +43,7 @@ import (
 // 	return res
 // }
 
-func main() {
-	a := threeSum([]int{-1, 0, 1, 2, -1, -4})
-	fmt.Println(a)
-}
+// func main() {
+// 	a := threeSum([]int{-1, 0, 1, 2, -1, -4})
+// 	fmt.Println(a)
+// }
