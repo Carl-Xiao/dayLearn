@@ -5,6 +5,7 @@ import (
 	"math"
 )
 
+//TreeNode 树节点
 type TreeNode struct {
 	Val   int
 	Left  *TreeNode
@@ -39,7 +40,7 @@ func largestValues(root *TreeNode) []int {
 			}
 			size--
 		}
-		fmt.Println(stack)
+		fmt.Println(queue)
 		result = append(result, res)
 
 	}

@@ -23,8 +23,12 @@
 ## 实战
 
 ### 转发服务
-- https://www.v2ray.com/chapter_00/workflow.html
-- https://github.com/v2ray/v2ray-core
+- 完成tcp websocket转发
 
-#### 要求
-支持tcp websocket协议
+
+
+
+
+
+
+
