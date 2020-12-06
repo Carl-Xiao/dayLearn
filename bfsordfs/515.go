@@ -52,7 +52,3 @@ func max(x, y int) int {
 	}
 	return x
 }
-
-func main() {
-
-}
