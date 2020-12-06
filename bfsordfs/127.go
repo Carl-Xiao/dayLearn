@@ -1,6 +1,8 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 //127 单词接龙
 
@@ -64,8 +66,57 @@ func isvald(word string, wordMap map[string]bool) bool {
 	return ok
 }
 
-//双向dfs
+func ladderLength3(beginWord string, endWord string, wordList []string) int {
+	dic := make(map[string]bool)
+	for _, v := range wordList {
+		dic[v] = true
+	}
 
-func main() {
-	fmt.Println(ladderLength("hit", "cog", []string{"hot", "dot", "dog", "lot", "log", "cog"}))
+	if dic[endWord] == false {
+		return 0
+	}
+
+	q1 := []string{beginWord}
+	q2 := []string{endWord}
+	step := 0
+
+	for len(q1) > 0 && len(q2) > 0 {
+		step++
+
+		if len(q1) > len(q2) {
+			q1, q2 = q2, q1
+		}
+
+		for _, w := range q1 {
+			q1 = q1[1:]
+
+			for j := 0; j < len(w); j++ {
+				for k := 'a'; k <= 'z'; k++ {
+					tmp := w[:j] + string(k) + w[j+1:]
+
+					if indexOf(q2, tmp) != -1 {
+						return step + 1
+					}
+
+					if dic[tmp] == false {
+						continue
+					}
+					fmt.Println(tmp)
+					delete(dic, tmp)
+					q1 = append(q1, tmp)
+				}
+			}
+		}
+	}
+
+	return 0
+}
+
+func indexOf(slice []string, item string) int {
+	for i, _ := range slice {
+		if slice[i] == item {
+			return i
+		}
+	}
+	return -1
 }
