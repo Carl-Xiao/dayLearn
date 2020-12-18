@@ -24,7 +24,3 @@ func isAnagram(s string, t string) bool {
 	return len(mac) == 0
 
 }
-
-func main() {
-
-}
