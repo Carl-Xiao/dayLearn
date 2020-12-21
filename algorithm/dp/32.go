@@ -39,10 +39,3 @@ func longestValidParentheses(s string) int {
 	fmt.Println(dp)
 	return maxArea
 }
-
-func max(x, y int) int {
-	if x > y {
-		return x
-	}
-	return y
-}
