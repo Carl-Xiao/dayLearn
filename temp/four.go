@@ -1,5 +1,9 @@
 package main
 
+import (
+	"fmt"
+)
+
 // 输入: [2,3,1,1,4]
 // 输出: 2
 // 解释: 跳到最后一个位置的最小跳跃数是 2。
@@ -27,4 +31,8 @@ func max(x, y int) int {
 		return y
 	}
 	return x
+}
+func main() {
+	fmt.Println("hello world")
+
 }
