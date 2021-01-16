@@ -1,7 +1,5 @@
 package main
 
-import "fmt"
-
 //普通解法
 func twoSum(nums []int, target int) []int {
 
@@ -28,9 +26,4 @@ func twoSumSecond(nums []int, target int) []int {
 		}
 	}
 	return []int{}
-}
-
-func main() {
-	fmt.Println(twoSumSecond([]int{3, 2, 4}, 6))
-
 }
