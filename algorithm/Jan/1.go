@@ -21,9 +21,9 @@ func twoSumSecond(nums []int, target int) []int {
 	for index, value := range nums {
 		if i, ok := numsMap[target-value]; ok {
 			return []int{index, i}
-		} else {
-			numsMap[value] = index
 		}
+		numsMap[value] = index
+
 	}
 	return []int{}
 }

@@ -10,13 +10,12 @@ func isValid(s string) bool {
 		} else {
 			if len(stack) == 0 {
 				return false
-			} else {
-				sv := stack[len(stack)-1]
-				if eq[sv] != v {
-					return false
-				}
-				stack = stack[:len(stack)-1]
 			}
+			sv := stack[len(stack)-1]
+			if eq[sv] != v {
+				return false
+			}
+			stack = stack[:len(stack)-1]
 		}
 	}
 	return len(stack) == 0
