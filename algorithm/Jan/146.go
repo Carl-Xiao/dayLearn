@@ -22,8 +22,8 @@ type LRUCache struct {
 	head, tail *node
 }
 
-//Constructor 初始化
-func Constructor(capacity int) LRUCache {
+//ConstructorLRUCache 初始化
+func ConstructorLRUCache(capacity int) LRUCache {
 	contentMap := make(map[int]*node, capacity)
 
 	l := LRUCache{
