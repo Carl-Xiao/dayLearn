@@ -1,9 +1,5 @@
 package main
 
-import (
-	"fmt"
-)
-
 //利用滑动窗口解题
 func minWindow(s string, t string) string {
 	ori := map[byte]int{}
@@ -45,8 +41,4 @@ func minWindow(s string, t string) string {
 		return ""
 	}
 	return s[start : start+minLen]
-}
-
-func main() {
-	fmt.Println(minWindow("a", "b"))
 }
