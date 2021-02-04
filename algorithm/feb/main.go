@@ -49,30 +49,6 @@ func swapPairs(head *ListNode) *ListNode {
 	return tmp
 }
 
-//滑动窗口
-// 480. 滑动窗口中位数
-// 中位数是有序序列最中间的那个数。如果序列的长度是偶数，则没有最中间的数；此时中位数是最中间的两个数的平均数。
-
-// 例如：
-
-// [2,3,4]，中位数是 3
-// [2,3]，中位数是 (2 + 3) / 2 = 2.5
-// 给你一个数组 nums，有一个长度为 k 的窗口从最左端滑动到最右端。窗口中有 k 个数，每次窗口向右移动 1 位。你的任务是找出每次窗口移动后得到的新窗口中元素的中位数，并输出由它们组成的数组。
-
-// 示例：
-
-// 给出 nums = [1,3,-1,-3,5,3,6,7]，以及 k = 3。
-
-// 窗口位置                      中位数
-// ---------------               -----
-// [1  3  -1] -3  5  3  6  7       1
-//  1 [3  -1  -3] 5  3  6  7      -1
-//  1  3 [-1  -3  5] 3  6  7      -1
-//  1  3  -1 [-3  5  3] 6  7       3
-//  1  3  -1  -3 [5  3  6] 7       5
-//  1  3  -1  -3  5 [3  6  7]      6
-//  因此，返回该滑动窗口的中位数数组 [1,-1,-1,3,5,6]。
-
 func medianSlidingWindow(nums []int, k int) (ans []float64) {
 	//如果K为偶数,则不存在中位数
 	knums := make([]int, k)
@@ -109,6 +85,149 @@ func midle(nums []int, k int) float64 {
 	return float64(n1+n2) / float64(2)
 }
 
+// 给定 n 个整数，找出平均数最大且长度为 k 的连续子数组，并输出该最大平均数。
+
+//
+
+// 示例：
+
+// 输入：[1,12,-5,-6,50,3], k = 4
+// 输出：12.75
+// 解释：最大平均数 (12-5-6+50)/4 = 51/4 = 12.75
+
+func findMaxAverage(nums []int, k int) (number float64) {
+	kums := make([]int, k)
+	copy(kums, nums[:k])
+	var sum int
+	for _, v := range kums {
+		sum += v
+	}
+	number = calc(sum, k)
+	for i := k; i < len(nums); i++ {
+		sum = sum + nums[i] - kums[0]
+		kums = append(kums, nums[i])
+		kums = kums[1:]
+		number = max(number, calc(sum, k))
+	}
+	return
+}
+func max(x, y float64) float64 {
+	if x < y {
+		return y
+	}
+	return x
+}
+
+func calc(total int, k int) float64 {
+	return float64(total) / float64(k)
+}
+
+// 给定一个非负整数数组 A，返回一个数组，在该数组中， A 的所有偶数元素之后跟着所有奇数元素。
+
+// 你可以返回满足此条件的任何数组作为答案。
+
+//
+
+// 示例：
+
+// 输入：[3,1,2,4]
+// 输出：[2,4,3,1]
+// 输出 [4,2,3,1]，[2,4,1,3] 和 [4,2,1,3] 也会被接受。
+
+func sortArrayByParity(A []int) (result []int) {
+	var odd, even []int
+	for _, v := range A {
+		if v%2 == 0 {
+			odd = append(odd, v)
+		} else {
+			even = append(even, v)
+		}
+	}
+	result = append(result, odd...)
+	result = append(result, even...)
+	return
+}
+
+// 给定一个非负整数数组 A， A 中一半整数是奇数，一半整数是偶数。
+
+// 对数组进行排序，以便当 A[i] 为奇数时，i 也是奇数；当 A[i] 为偶数时， i 也是偶数。
+
+// 你可以返回任何满足上述条件的数组作为答案。
+
+// 示例：
+// 输入：[4,2,5,7]
+// 输出：[4,5,2,7]
+// 解释：[4,7,2,5]，[2,5,4,7]，[2,7,4,5] 也会被接受。
+
+func sortArrayByParityII(A []int) (result []int) {
+	result = make([]int, len(A))
+	odd, even := 0, 1
+	for i := 0; i < len(A); i++ {
+		if A[i]%2 == 0 {
+			result[odd] = A[i]
+			odd += 2
+		} else {
+			result[even] = A[i]
+			even += 2
+		}
+	}
+	return
+}
+
+// 示例 1：
+// 输入：nums = [-4,-1,0,3,10]
+// 输出：[0,1,9,16,100]
+// 解释：平方后，数组变为 [16,1,0,9,100]
+// 排序后，数组变为 [0,1,9,16,100]
+
+//有序数的平方
+func sortedSquares(nums []int) []int {
+	for i, v := range nums {
+		nums[i] = v * v
+	}
+	//排序没有利用升序的性能
+	sort.Ints(nums)
+	return nums
+}
+
+//利用双指针处理
+// func sortedSquares(a []int) []int {
+// 	n := len(a)
+// 	ans := make([]int, n)
+// 	i, j := 0, n-1
+// 	for pos := n - 1; pos >= 0; pos-- {
+// 		if v, w := a[i]*a[i], a[j]*a[j]; v > w {
+// 			ans[pos] = v
+// 			i++
+// 		} else {
+// 			ans[pos] = w
+// 			j--
+// 		}
+// 	}
+// 	return ans
+// }
+
+// 符合下列属性的数组 arr 称为 山脉数组 ：
+// arr.length >= 3
+// 存在 i（0 < i < arr.length - 1）使得：
+// arr[0] < arr[1] < ... arr[i-1] < arr[i]
+// arr[i] > arr[i+1] > ... > arr[arr.length - 1]
+// 给你由整数组成的山脉数组 arr ，返回任何满足 arr[0] < arr[1] < ... arr[i - 1] < arr[i] > arr[i + 1] > ... > arr[arr.length - 1] 的下标 i 。
+
+//双指针
+func peakIndexInMountainArray(arr []int) int {
+	l, r := 0, len(arr)-1
+	for l < r {
+		if arr[l+1] > arr[l] {
+			l++
+		}
+		if arr[r] < arr[r-1] {
+			r--
+		}
+	}
+	return l
+}
+
 func main() {
-	fmt.Println(medianSlidingWindow([]int{1, 3, -1, -3, 5, 3, 6, 7}, 3))
+	fmt.Println(peakIndexInMountainArray([]int{24, 69, 100, 99, 79, 78, 67, 36, 26, 19}))
 }
