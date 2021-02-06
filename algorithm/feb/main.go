@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math"
 	"sort"
 )
 
@@ -228,6 +229,108 @@ func peakIndexInMountainArray(arr []int) int {
 	return l
 }
 
+// 33. 搜索旋转排序数组
+func search(nums []int, target int) bool {
+	l, r := 0, len(nums)-1
+	for l <= r {
+		mid := (l + r) / 2
+		if nums[mid] == target {
+			return true
+		}
+		if nums[mid] == nums[l] {
+			l++
+		} else if nums[mid] == nums[r] {
+			r--
+		} else if nums[mid] < nums[r] {
+			if nums[mid] < target && target <= nums[r] {
+				l = mid + 1
+			} else {
+				r = mid - 1
+			}
+		} else {
+			if nums[l] <= target && target < nums[mid] {
+				r = mid - 1
+			} else {
+				l = mid + 1
+			}
+		}
+	}
+	return false
+}
+
+//
+func findMin(nums []int) int {
+	if len(nums) == 1 {
+		return nums[0]
+	}
+	l := 0
+	for i := 0; i < len(nums)-1; i++ {
+		if nums[i+1] < nums[i] {
+			l = i + 1
+			break
+		}
+	}
+	return nums[l]
+}
+
+// 示例 1：
+// 输入: [1,3,5]
+// 输出: 1
+
+// 示例 2：
+
+// 输入: [2,2,2,0,1]
+// 输出: 0
+func findMin2(nums []int) int {
+	l, r := 0, len(nums)-1
+	minresult := math.MaxInt64
+	for l <= r {
+		if nums[l] < nums[r] {
+			minresult = min(minresult, nums[l])
+			l++
+		} else {
+			minresult = min(minresult, nums[r])
+			r--
+		}
+	}
+	return minresult
+}
+func min(x, y int) int {
+	if x < y {
+		return x
+	}
+	return y
+}
+
+func searchMatrix(matrix [][]int, target int) bool {
+	var nums []int
+	for i := 0; i < len(matrix); i++ {
+		n := len(matrix[i])
+		fmt.Println(matrix[i])
+		if matrix[i][n-1] >= target && matrix[i][0] <= target {
+			nums = matrix[i]
+			break
+		}
+	}
+	l, r := 0, len(nums)-1
+	for l <= r {
+		mid := (l + r) / 2
+		if nums[mid] == target {
+			return true
+		} else if nums[mid] > target {
+			r = mid - 1
+		} else if nums[mid] < target {
+			l = mid + 1
+		}
+	}
+	return false
+
+}
+
 func main() {
-	fmt.Println(peakIndexInMountainArray([]int{24, 69, 100, 99, 79, 78, 67, 36, 26, 19}))
+	fmt.Println(searchMatrix([][]int{
+		{1, 3, 5, 7},
+		{10, 11, 16, 20},
+		{23, 30, 34, 60},
+	}, 3))
 }
