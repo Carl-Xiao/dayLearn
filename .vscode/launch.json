@@ -6,7 +6,7 @@
             "type": "go",
             "request": "launch",
             "mode": "auto",
-            "program": "/home/cc/code/dayLearn/algorithm/Jan/947.go",
+            "program": "G:/xiao/dayLearn/algorithm/feb/main.go",
             "env": {},
             "args": []
         }

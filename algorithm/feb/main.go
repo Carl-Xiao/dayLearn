@@ -228,6 +228,55 @@ func peakIndexInMountainArray(arr []int) int {
 	return l
 }
 
+// 给定一个正整数数组 A，如果 A 的某个子数组中不同整数的个数恰好为 K，则称 A 的这个连续、不一定独立的子数组为好子数组。
+
+// （例如，[1,2,3,1,2] 中有 3 个不同的整数：1，2，以及 3。）
+
+// 返回 A 中好子数组的数目。
+
+// 示例 1：
+
+// 输入：A = [1,2,1,2,3], K = 2
+// 输出：7
+// 解释：恰好由 2 个不同整数组成的子数组：[1,2], [2,1], [1,2], [2,3], [1,2,1], [2,1,2], [1,2,1,2].
+
+//滑动窗口解题
+func subarraysWithKDistinct(A []int, K int) int {
+	l := 0
+	n := len(A)
+	mac := make(map[int]int)
+	distinct := 0
+	res := 0
+	result := 1
+	for r := 0; r < n; r++ {
+		if mac[A[r]] == 0 {
+			distinct++
+		}
+		mac[A[r]]++
+
+		for mac[A[l]] > 1 || distinct > K {
+			if distinct > K {
+				result = 1
+				distinct--
+			} else {
+				result++
+			}
+			mac[A[l]]--
+			l++
+		}
+		//判断map的size==K
+		if distinct == K {
+			res += result
+		}
+	}
+	return res
+}
+
+
+
+
+
+
 func main() {
-	fmt.Println(peakIndexInMountainArray([]int{24, 69, 100, 99, 79, 78, 67, 36, 26, 19}))
+	fmt.Println(subarraysWithKDistinct([]int{1, 2, 1, 2, 3}, 2))
 }
