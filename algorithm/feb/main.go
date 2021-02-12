@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math"
 	"sort"
+	"strings"
 )
 
 //ListNode 节点
@@ -371,10 +372,94 @@ func searchMatrix(matrix [][]int, target int) bool {
 
 }
 
+//括号生成
+func generateParenthesis(n int) []string {
+	res := new([]string)
+	_generateParent(n, n, "", res)
+	return *res
+}
+
+func _generateParent(l, r int, s string, result *[]string) {
+	if l == 0 || r == 0 {
+		*result = append(*result, s)
+		return
+	}
+	if l > 0 {
+		_generateParent(l-1, r, s+"(", result)
+	}
+	if r > l {
+		_generateParent(l, r-1, s+")", result)
+	}
+}
+
+func solveNQueens(n int) [][]string {
+	bd := make([][]string, n)
+	for i := range bd {
+		bd[i] = make([]string, n)
+		for j := range bd[i] {
+			bd[i][j] = "."
+		}
+	}
+	cols := map[int]bool{}
+	pie := map[int]bool{}
+	na := map[int]bool{}
+	res := [][]string{}
+	helper(0, bd, &res, n, &cols, &pie, &na)
+	return len(res)
+}
+func helper(r int, bd [][]string, res *[][]string, n int, cols, diag1, diag2 *map[int]bool) {
+	if r == n {
+		temp := make([]string, len(bd))
+		for i := 0; i < n; i++ {
+			temp[i] = strings.Join(bd[i], "")
+		}
+		*res = append(*res, temp)
+		return
+	}
+	for c := 0; c < n; c++ {
+		if !(*cols)[c] && !(*diag1)[r+c] && !(*diag2)[r-c] {
+			bd[r][c] = "Q"
+			(*cols)[c] = true
+			(*diag1)[r+c] = true
+			(*diag2)[r-c] = true
+			helper(r+1, bd, res, n, cols, diag1, diag2)
+			bd[r][c] = "."
+			(*cols)[c] = false
+			(*diag1)[r+c] = false
+			(*diag2)[r-c] = false
+		}
+	}
+}
+
+//求N皇后的解题数量
+func totalNQueens(n int) (ans int) {
+	columns := make([]bool, n)        // 列上是否有皇后
+	diagonals1 := make([]bool, 2*n-1) // 左上到右下是否有皇后
+	diagonals2 := make([]bool, 2*n-1) // 右上到左下是否有皇后
+	var backtrack func(int)
+	backtrack = func(row int) {
+		if row == n {
+			ans++
+			return
+		}
+		for col, hasQueen := range columns {
+			d1, d2 := row+n-1-col, row+col
+			if hasQueen || diagonals1[d1] || diagonals2[d2] {
+				continue
+			}
+			columns[col] = true
+			diagonals1[d1] = true
+			diagonals2[d2] = true
+			backtrack(row + 1)
+			columns[col] = false
+			diagonals1[d1] = false
+			diagonals2[d2] = false
+		}
+	}
+	backtrack(0)
+	return
+}
+
 func main() {
-	fmt.Println(searchMatrix([][]int{
-		{1, 3, 5, 7},
-		{10, 11, 16, 20},
-		{23, 30, 34, 60},
-	}, 3))
+	fmt.Println(solveNQueens(4))
 }
