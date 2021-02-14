@@ -1,6 +1,8 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 type TreeNode struct {
 	Val   int
@@ -177,13 +179,6 @@ func dfsDistribute(root *TreeNode, res *int) int {
 	return l + r + root.Val - 1
 }
 
-func abs(v int) int {
-	if v < 0 {
-		v = -v
-	}
-	return v
-}
-
 func exist(board [][]byte, word string) bool {
 	for i := 0; i < len(board); i++ {
 		for j := 0; j < len(board[i]); j++ {
@@ -228,6 +223,157 @@ func dfsWord(board [][]byte, word string, i, j, k int) bool {
 	return false
 }
 
+func findDisappearedNumbers(nums []int) []int {
+	i := 0
+	for i < len(nums) {
+		if nums[i] == i+1 { // 当前元素出现在它该出现的位置，无需交换
+			i++
+			continue
+		}
+		idealIdx := nums[i] - 1        // idealIdx：当前元素应该出现的位置
+		if nums[i] == nums[idealIdx] { // 当前元素=它理应出现的位置上的现有元素，说明重复了
+			i++
+			continue
+		}
+		nums[idealIdx], nums[i] = nums[i], nums[idealIdx] // 不重复，进行交换
+	}
+	res := []int{}
+	for i := 0; i < len(nums); i++ {
+		if nums[i] != i+1 { // 值与索引 不对应
+			res = append(res, i+1)
+		}
+	}
+	return res
+}
+
+func abs(x int) int {
+	if x < 0 {
+		return -x
+	}
+	return x
+}
+func minOperations(s string) int {
+	n := len(s)
+	bs := []byte(s)
+	a, b := make([]byte, len(bs)), make([]byte, len(bs))
+	copy(a, bs)
+	copy(b, bs)
+	var x, y int
+	//01
+	for i := 1; i < len(a); {
+		if a[i] == '1' {
+			if a[i-1] == '0' {
+
+			} else {
+				a[i-1] = '0'
+				x++
+			}
+		} else {
+			a[i] = '1'
+			x++
+			if a[i-1] != '0' {
+				a[i-1] = '0'
+				x = x + 1
+			}
+		}
+		i = i + 2
+	}
+	if n > 2 && a[n-1] == a[n-2] {
+		x++
+	}
+	//10
+	for i := 1; i < len(b); {
+		if b[i] == '0' {
+			if b[i-1] == '1' {
+
+			} else {
+				b[i-1] = '1'
+				y++
+			}
+		} else {
+			b[i] = '0'
+			y++
+			if b[i-1] != '1' {
+				b[i-1] = '1'
+				y = y + 1
+			}
+		}
+		i = i + 2
+	}
+	if n > 2 && b[n-1] == b[n-2] {
+		y++
+	}
+	return min(x, y)
+}
+
+func min(x, y int) int {
+	if x < y {
+		return x
+	}
+	return y
+}
+
+func countHomogenous(s string) int {
+	r := 0
+	mac := make(map[byte]int)
+	var stack []byte
+	var total int
+	for r < len(s) {
+		if _, ok := mac[s[r]]; !ok {
+			stack = append(stack, s[r])
+		}
+		mac[s[r]]++
+		for len(mac) == 2 {
+			v := mac[stack[0]]
+			total += calc(v)
+			delete(mac, stack[0])
+			stack = stack[1:]
+		}
+		r++
+	}
+	for _, v := range mac {
+		total += calc(v)
+	}
+	return total % 1000000007
+}
+
+func calc(v int) int {
+	var total int
+	for i := 1; i <= v; i++ {
+		total += i
+	}
+	return total
+}
+
+func check(nums []int, cost, maxOperations int) bool {
+	var ans int
+	for _, cur := range nums {
+		if cur%cost == 0 {
+			ans += cur/cost - 1
+		} else {
+			ans += cur / cost
+		}
+	}
+	return ans <= maxOperations
+}
+
+func minimumSize(nums []int, maxOperations int) int {
+	l := 1
+	r := 1000000000
+	ret := 0
+	for l <= r {
+		mid := (l + r) / 2
+		if check(nums, mid, maxOperations) {
+			r = mid - 1
+			ret = mid
+		} else {
+			l = mid + 1
+		}
+	}
+	return ret
+}
+
 func main() {
-	fmt.Println(exist([][]byte{{'A', 'B', 'C', 'E'}, {'S', 'F', 'C', 'S'}, {'A', 'D', 'E', 'E'}}, "ABCCED"))
+	// 10010100
+	fmt.Println(countHomogenous("zzzzz"))
 }
