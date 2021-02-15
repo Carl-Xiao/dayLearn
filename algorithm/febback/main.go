@@ -373,7 +373,25 @@ func minimumSize(nums []int, maxOperations int) int {
 	return ret
 }
 
+// [1,1,0,1,1,1]
+// 输出: 3
+// 解释: 开头的两位和最后的三位都是连续1，所以最大连续1的个数是 3.
+func findMaxConsecutiveOnes(nums []int) int {
+	cnt := 0
+	maxCnt := 0
+	for _, v := range nums {
+		if v == 1 {
+			cnt++
+		} else {
+			cnt = 0
+		}
+		if maxCnt < cnt {
+			maxCnt = cnt
+		}
+	}
+	return maxCnt
+}
+
 func main() {
-	// 10010100
-	fmt.Println(countHomogenous("zzzzz"))
+	fmt.Println(findMaxConsecutiveOnes([]int{0, 0}))
 }
