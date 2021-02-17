@@ -392,6 +392,96 @@ func findMaxConsecutiveOnes(nums []int) int {
 	return maxCnt
 }
 
+func minCostClimbingStairs(cost []int) int {
+	if len(cost) < 2 {
+		return cost[0]
+	}
+	if len(cost) == 2 {
+		return min(cost[0], cost[1])
+	}
+	nums := make([]int, len(cost)+1)
+	for i := 2; i <= len(cost); i++ {
+		nums[i] = min(nums[i-1]+cost[i-1], nums[i-2]+cost[i-2])
+	}
+	return nums[len(cost)]
+}
+
+//爬楼梯问题
+func climbStairs(n int) int {
+	a, b := 1, 1
+	for i := 2; i <= n; i++ {
+		b = a + b
+		a, b = b, a
+	}
+	return a
+}
+
+//dp方程
+//dp[i][j]=dp[i-1][j]+dp[i][j-1]
+func uniquePaths(m int, n int) int {
+	dp := make([][]int, m)
+	for i := range dp {
+		dp[i] = make([]int, n)
+		dp[i][0] = 1
+	}
+	for j := 0; j < n; j++ {
+		dp[0][j] = 1
+	}
+	for i := 1; i < m; i++ {
+		for j := 1; j < n; j++ {
+			dp[i][j] = dp[i-1][j] + dp[i][j-1]
+		}
+	}
+	return dp[m-1][n-1]
+}
+
+//路径和最小,每一次的取值最小
+//dp[i][j]=min(dp[i-1][j]+grid[i-1][j],dp[i][j-1]+grid[i][j-1])
+func minPathSum(grid [][]int) int {
+	m := len(grid)
+	n := len(grid[0])
+
+	min := func(x, y int) int {
+		if x < y {
+			return x
+		}
+		return y
+	}
+	for i := 0; i < m; i++ {
+		for j := 0; j < n; j++ {
+			if i == 0 && j == 0 {
+				continue
+			} else if i == 0 {
+				grid[i][j] = grid[i][j-1] + grid[i][j]
+			} else if j == 0 {
+				grid[i][j] = grid[i-1][j] + grid[i][j]
+			} else {
+				grid[i][j] = min(grid[i-1][j], grid[i][j-1]) + grid[i][j]
+			}
+		}
+	}
+	return grid[m-1][n-1]
+}
+
+//最大子序和
+//dp[i]=max(dp[i-1],nums[i])
+// -2,1,-3,4,-1,2,1,-5,4
+func maxSubArray(nums []int) int {
+	if len(nums) == 1 {
+		return nums[0]
+	}
+	max := nums[0]
+	for i := 1; i < len(nums); i++ {
+		if nums[i]+nums[i-1] > nums[i] {
+			nums[i] += nums[i-1]
+		}
+		if nums[i] > max {
+			max = nums[i]
+		}
+	}
+	return max
+}
+
 func main() {
-	fmt.Println(findMaxConsecutiveOnes([]int{0, 0}))
+	fmt.Println(maxSubArray([]int{-2, 1, -3, 4, -1, 2, 1, -5, 4}))
 }

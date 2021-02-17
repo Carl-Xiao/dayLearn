@@ -405,7 +405,7 @@ func solveNQueens(n int) [][]string {
 	na := map[int]bool{}
 	res := [][]string{}
 	helper(0, bd, &res, n, &cols, &pie, &na)
-	return len(res)
+	return nil
 }
 func helper(r int, bd [][]string, res *[][]string, n int, cols, diag1, diag2 *map[int]bool) {
 	if r == n {
@@ -458,6 +458,112 @@ func totalNQueens(n int) (ans int) {
 	}
 	backtrack(0)
 	return
+}
+
+//搜索二维矩阵 II
+func searchMatrixII(matrix [][]int, target int) bool {
+	if len(matrix) == 0 || len(matrix[0]) == 0 {
+		return false
+	}
+	row := 0
+	col := len(matrix[0]) - 1
+	for row < len(matrix) && col >= 0 {
+		if matrix[row][col] == target {
+			return true
+		}
+		if matrix[row][col] > target {
+			col--
+			continue
+		}
+		if matrix[row][col] < target {
+			row++
+			continue
+		}
+	}
+	return false
+}
+
+//合并K个升序链表
+func mergeKLists(lists []*ListNode) *ListNode {
+	if len(lists) == 0 {
+		return nil
+	}
+	//只保留一个节点
+	for len(lists) > 1 {
+		lists = append(lists, merge(lists[0], lists[1]))
+		lists = lists[2:]
+	}
+	return lists[0]
+}
+
+func merge(one *ListNode, two *ListNode) *ListNode {
+	root := new(ListNode)
+	cur := root
+	for one != nil && two != nil {
+		if one.Val < two.Val {
+			cur.Next = one
+			one = one.Next
+		} else {
+			cur.Next = two
+			two = two.Next
+		}
+		cur = cur.Next
+	}
+	if one != nil {
+		cur.Next = one
+	} else {
+		cur.Next = two
+	}
+	return root.Next
+}
+
+func findKthLargest(nums []int, k int) int {
+	return Partition(nums, k)
+}
+
+func Partition(nums []int, k int) int { //快排
+	i, j := 0, len(nums)-1
+	pivot := nums[0]
+	for i < j {
+		for i < j && nums[j] < pivot {
+			j--
+		}
+		if i < j {
+			nums[i], nums[j] = nums[j], nums[i]
+			i++
+		}
+		for i < j && nums[i] > pivot {
+			i++
+		}
+		if i < j {
+			nums[i], nums[j] = nums[j], nums[i]
+			j--
+		}
+	}
+
+	if i+1 == k {
+		return pivot //   位子恰好就是K-1返回结果
+	} else if i+1 < k {
+		return Partition(nums[i+1:], k-i-1) //以pivot为断点，在后半部分数组中进行查找
+	} else {
+		return Partition(nums[:i], k) //在前半部分数组中进行查找
+	}
+}
+
+func matrixReshape(nums [][]int, r int, c int) [][]int {
+	n, m := len(nums), len(nums[0])
+	if n*m != r*c {
+		return nums
+	}
+	ans := make([][]int, r)
+	for i := range ans {
+		ans[i] = make([]int, c)
+	}
+	//压缩成为一维数组
+	for i := 0; i < n*m; i++ {
+		ans[i/c][i%c] = nums[i/m][i%m]
+	}
+	return ans
 }
 
 func main() {
