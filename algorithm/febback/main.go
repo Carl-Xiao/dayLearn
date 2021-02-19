@@ -464,7 +464,7 @@ func minPathSum(grid [][]int) int {
 }
 
 //最大子序和
-//dp[i]=max(dp[i-1],nums[i])
+//dp[i]=max(dp[i-1]+nums[i],nums[i])
 // -2,1,-3,4,-1,2,1,-5,4
 func maxSubArray(nums []int) int {
 	if len(nums) == 1 {
@@ -482,6 +482,69 @@ func maxSubArray(nums []int) int {
 	return max
 }
 
+//乘积最大子数组
+//正负数的不确定,需要保存一个最小的数
+func maxProduct(nums []int) (ans int) {
+	maxF, minF := 1, 1
+	ans = nums[0]
+	for i := 0; i < len(nums); i++ {
+		if nums[i] < 0 {
+			minF, maxF = maxF, minF
+		}
+		maxF = max(maxF*nums[i], nums[i])
+		minF = min(minF*nums[i], nums[i])
+		ans = max(maxF, ans)
+	}
+	return
+}
+
+//买卖股票问题
+//0 是卖出
+//1 是买入
+
+//dp[i][0]=max(dp[i-1][0],dp[i-1][1]+prices[i])
+//昨天卖出/昨天买进消耗的钱与今天卖出转的利润相加
+//dp[i][1]=max(dp[i-1][1],-prices[i])
+//昨天买进/今天买进
+//一次买进/卖出
+func maxProfit(prices []int) int {
+	n := len(prices)
+	dp := make([][2]int, len(prices))
+	dp[0][0] = 0
+	dp[0][1] = -prices[0]
+	for i := 1; i < len(prices); i++ {
+		dp[i][0] = max(dp[i-1][0], dp[i-1][1]+prices[i])
+		dp[i][1] = max(dp[i-1][1], -prices[i])
+	}
+	return dp[n-1][0]
+}
+
+//多次买进/卖出
+//0 是卖出
+//1 是买入
+//dp[i][0]=max(dp[i-1][0],dp[i-1][1]+prices[i])
+//dp[i][1]=max(dp[i-1][1],dp[i-1][0]-prices[i])
+func maxProfitII(prices []int) int {
+	n := len(prices)
+	dp := make([][2]int, len(prices))
+	dp[0][0] = 0
+	dp[0][1] = -prices[0]
+	for i := 1; i < len(prices); i++ {
+		dp[i][0] = max(dp[i-1][0], dp[i-1][1]+prices[i])
+		dp[i][1] = max(dp[i-1][1], dp[i-1][0]-prices[i])
+	}
+	return dp[n-1][0]
+}
+
+//给定次数的买进/卖出
+//0 是卖出
+//1 是买入
+//dp[i][0]=max(dp[i-1][0],dp[i-1][1]+prices[i])
+//dp[i][1]=max(dp[i-1][1],dp[i-1][0]-prices[i])
+func maxProfitIII(prices []int) int {
+	return 0
+}
+
 func main() {
-	fmt.Println(maxSubArray([]int{-2, 1, -3, 4, -1, 2, 1, -5, 4}))
+	fmt.Println(maxProfitII([]int{7, 1, 5, 3, 6, 4}))
 }
