@@ -566,6 +566,32 @@ func matrixReshape(nums [][]int, r int, c int) [][]int {
 	return ans
 }
 
+// 输入：A = [1,1,1,0,0,0,1,1,1,1,0], K = 2
+// 输出：6
+//0,0,1,1,0,0,1,1,1,0,1,1,0,0,0,1,1,1,1 k=3
+func longestOnes(A []int, K int) int {
+	i, j := 0, 0
+	maxLen := 0
+	zero := 0
+	for j < len(A) {
+		if A[j] == 0 {
+			zero++
+		}
+		if zero > K {
+			if A[i] == 0 {
+				zero--
+			}
+			i++
+		}
+		j++
+		if j-i > maxLen {
+			maxLen = j - i
+		}
+	}
+	return maxLen
+}
+
 func main() {
-	fmt.Println(solveNQueens(4))
+	fmt.Println(longestOnes([]int{1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0}, 2))
+	// fmt.Println(longestOnes([]int{0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1}, 3))
 }
