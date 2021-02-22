@@ -545,6 +545,17 @@ func maxProfitIII(prices []int) int {
 	return 0
 }
 
+//零钱兑换
+// 给定不同面额的硬币 coins 和一个总金额 amount。编写一个函数来计算可以凑成总金额所需的最少的硬币个数。如果没有任何一种硬币组合能组成总金额，返回 -1。
+
+// 你可以认为每种硬币的数量是无限的。
+//暴力破解  应该也是可以的,但是时间复杂度比较高
+//使用动态规划
+func coinChange(coins []int, amount int) int {
+
+	return -1
+}
+
 func main() {
 	fmt.Println(maxProfitII([]int{7, 1, 5, 3, 6, 4}))
 }
