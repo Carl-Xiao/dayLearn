@@ -547,15 +547,48 @@ func maxProfitIII(prices []int) int {
 
 //零钱兑换
 // 给定不同面额的硬币 coins 和一个总金额 amount。编写一个函数来计算可以凑成总金额所需的最少的硬币个数。如果没有任何一种硬币组合能组成总金额，返回 -1。
-
 // 你可以认为每种硬币的数量是无限的。
-//暴力破解
 //使用动态规划
-func coinChange(coins []int, amount int) int {
+//j代表不同种类的硬币
 
-	return -1
+//dp[i]=min(dp[i-conins[j]]+1，dp[i])
+func coinChange(coins []int, amount int) int {
+	dp := make([]int, amount+1)
+	for i := 0; i <= amount; i++ {
+		dp[i] = amount + 1
+	}
+	dp[0] = 0
+	for i := 1; i <= amount; i++ {
+		for j := 0; j < len(coins); j++ {
+			if coins[j] <= i {
+				dp[i] = min(dp[i], dp[i-coins[j]]+1)
+			}
+		}
+	}
+	if dp[amount] > amount {
+		return -1
+	}
+	return dp[amount]
+}
+
+// 518. 零钱兑换 II
+//计算组合数的个数
+//f(n) = f(n-coins[0]) +  f(n-coins[1]) + ...
+func change(amount int, coins []int) int {
+	dp := make([]int, amount+1)
+	dp[0] = 1
+	for _, coin := range coins {
+		for i := 1; i < amount+1; i++ {
+			if i < coin {
+				continue
+			}
+			dp[i] += dp[i-coin]
+		}
+	}
+	fmt.Println(dp)
+	return dp[amount]
 }
 
 func main() {
-	fmt.Println(maxProfitII([]int{7, 1, 5, 3, 6, 4}))
+	fmt.Println(change(5, []int{1, 2, 5}))
 }

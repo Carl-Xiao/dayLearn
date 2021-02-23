@@ -6,7 +6,7 @@
             "type": "go",
             "request": "launch",
             "mode": "auto",
-            "program": "G:/xiao/dayLearn/algorithm/feb/main.go",
+            "program": "G:/xiao/dayLearn/algorithm/febback/main.go",
             // "program": "/home/cc/code/dayLearn/algorithm/febback/main.go",
             "env": {},
             "args": []
