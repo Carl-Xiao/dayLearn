@@ -646,10 +646,28 @@ func isToeplitzMatrix(matrix [][]int) bool {
 	return true
 }
 
+//a[i][j]=a[j][i]
+
+//如果不是n*n的翻转需要转换一下思路
+func transpose(matrix [][]int) [][]int {
+	r := len(matrix)
+	c := len(matrix[0])
+	result := make([][]int, c)
+	for i := range result {
+		result[i] = make([]int, r)
+	}
+	for i := 0; i < c; i++ {
+		for j := 0; j < r; j++ {
+			result[i][j] = matrix[j][i]
+		}
+	}
+	return result
+}
+
 func main() {
-	fmt.Println(isToeplitzMatrix([][]int{
-		{1, 2},
-		{2, 2},
+	fmt.Println(transpose([][]int{
+		{1, 2, 3},
+		{4, 5, 6},
 	}))
 
 }
