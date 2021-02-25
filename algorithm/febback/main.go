@@ -585,7 +585,6 @@ func change(amount int, coins []int) int {
 			dp[i] += dp[i-coin]
 		}
 	}
-	fmt.Println(dp)
 	return dp[amount]
 }
 
