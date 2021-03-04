@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"sort"
+)
 
 //TreeNode 树节点
 type TreeNode struct {
@@ -593,17 +596,32 @@ func change(amount int, coins []int) int {
 // 请计算最多能有多少个信封能组成一组“俄罗斯套娃”信封（即可以把一个信封放到另一个信封里面）。
 
 func maxEnvelopes(envelopes [][]int) int {
-
-	return 0
+	sort.Slice(envelopes, func(i, j int) bool {
+		return envelopes[i][0] < envelopes[j][0] || (envelopes[i][0] == envelopes[j][0] || envelopes[i][1] > envelopes[i][1])
+	})
+	fmt.Println(envelopes)
+	dp := make([]int, len(envelopes)+1)
+	result := 1
+	for i := 0; i < len(envelopes); i++ {
+		dp[i] = 1
+		for j := 0; j < i; j++ {
+			if envelopes[j][1] < envelopes[i][1] {
+				dp[i] = max(dp[j]+1, dp[i])
+			}
+		}
+		result = max(result, dp[i])
+	}
+	return result
 }
 
 // 300. 最长递增子序列
+//dp[i]=max(dp[i],dp[j]+1)
 func lengthOfLIS(nums []int) int {
 	if len(nums) < 1 {
 		return 0
 	}
 	dp := make([]int, len(nums))
-	result := 1
+	result := 0
 	for i := 0; i < len(nums); i++ {
 		dp[i] = 1
 		for j := 0; j < i; j++ {
@@ -616,7 +634,16 @@ func lengthOfLIS(nums []int) int {
 	return result
 }
 
-
 func main() {
-	fmt.Println(lengthOfLIS([]int{10, 9, 2, 5, 3, 7, 101, 18}))
+	fmt.Println(maxEnvelopes([][]int{
+		{2, 100},
+		{3, 200},
+		{4, 300},
+		{5, 500},
+		{5, 400},
+		{5, 250},
+		{6, 370},
+		{6, 360},
+		{7, 380},
+	}))
 }
