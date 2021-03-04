@@ -597,7 +597,7 @@ func change(amount int, coins []int) int {
 
 func maxEnvelopes(envelopes [][]int) int {
 	sort.Slice(envelopes, func(i, j int) bool {
-		return envelopes[i][0] < envelopes[j][0] || (envelopes[i][0] == envelopes[j][0] || envelopes[i][1] > envelopes[i][1])
+		return envelopes[i][0] < envelopes[j][0] || (envelopes[i][0] == envelopes[j][0] && envelopes[i][1] > envelopes[j][1])
 	})
 	fmt.Println(envelopes)
 	dp := make([]int, len(envelopes)+1)
@@ -611,6 +611,7 @@ func maxEnvelopes(envelopes [][]int) int {
 		}
 		result = max(result, dp[i])
 	}
+	fmt.Println(dp)
 	return result
 }
 
