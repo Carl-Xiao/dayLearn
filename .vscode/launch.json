@@ -7,7 +7,7 @@
             "request": "launch",
             "mode": "auto",
             // "program": "G:/xiao/dayLearn/algorithm/febback/main.go",
-            "program": "/home/cc/code/dayLearn/course/error/1.go",
+            "program": "/home/cc/code/dayLearn/algorithm/march/main.go",
             "env": {},
             "args": []
         }
