@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+package stream.proto;
+
+option go_package = "stream/proto";
+
+service StreamService {
+    rpc Sum (stream SumRequest) returns (SumResponse) {}
+    rpc Facb (FacbRequest) returns (stream FacbResponse) {}
+    rpc Chat(stream ChatRequest) returns (stream ChatResponse) {}
+}
+
+message SumRequest {
+    int64 num = 1;
+}
+
+message SumResponse {
+    int64 result = 1;
+}
+
+message FacbRequest {
+    int64 max = 1;
+}
+
+message FacbResponse {
+    int32 index = 1;
+    int64 curr = 2;
+}
+
+message ChatRequest {
+    string msg = 1;
+}
+
+message ChatResponse {
+    string reply = 1;
+}
